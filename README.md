@@ -98,3 +98,136 @@ Presenter - презентер содержит основную логику п
 `emit<T extends object>(event: string, data?: T): void` - инициализация события. При вызове события в метод передается название события и объект с данными, который будет использован как аргумент для вызова обработчика.  
 `trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void` - возвращает функцию, при вызове которой инициализируется требуемое в параметрах событие с передачей в него данных из второго параметра.
 
+### Данные
+
+В проекте используется два интерфейса для описания данных: товар (`IProduct`) и покупатель (`IBuyer`).
+
+#### IProduct
+
+**Назначение интерфейса**: учёт товаров, которые используются в приложении
+
+```
+interface IProduct {
+  id: string;
+  description: string;
+  image: string;
+  title: string;
+  category: string;
+  price: number | null;
+}
+```
+
+**Описание полей**
+
+| Поле  | Тип | Назначение | Пример значения
+| ------------- | ------------- | ------------- | ------------- |
+| `id`  | `string`  | уникальный идентификатор товара  | `854cef69-976d-4c2a-a18c-2aa45046c390`  |
+| `description`  | `string`  | текстовое описание товара  | `Если планируете решать задачи в тренажёре, берите два.`  |
+| `image`  | `string` | путь до изображения товара | `/5_Dots.svg`  |
+| `title`  | `string` | название товара | `+1 час в сутках`  |
+| `category`  | `string` | категория товара | `другое` |
+| `price`  | `number \| null` | цена товара | `750` |
+
+#### IBuyer
+
+**Назначение интерфейса**: хранение данных о покупателе
+
+```
+type TPayment = 'cash' | 'card' | ''
+
+interface IBuyer {
+  paymentType: TPayment;
+  email: string;
+  phoneNumber: string;
+  address: string;
+}
+```
+
+**Описание полей**
+
+| Поле  | Тип | Назначение |
+| ------------- | ------------- | ------------- | 
+| `paymentType`  | `TPayment`  | тип оплаты заказа  |
+| `email`  | `string` | почта покупателя  |
+| `phoneNumber`  | `string` | номер телефона  |
+| `address`  | `string` | адрес доставки  |
+
+
+### Модели данных
+
+#### Каталог товаров
+
+**Назначение класса**: хранение и предоставление данных о товарах, доступных для покупки
+
+| Поле  | Тип | Назначение |
+| ------------- | ------------- | ------------- | 
+| `products`  | `IProduct[]`  | массив всех товаров  |
+| `selectedProduct`  | `IProduct \| null`  | товар, выбранный для отображения  |
+
+**Методы**
+
+- `saveProductsArray(products: IProduct[]): void` — сохранение массива товаров полученного в параметрах метода
+- `getAllProducts(): IProduct[]` — получение массива товаров из модели
+- `getProductByID(id: string): IProduct | undefined` — получение одного товара по его `id`
+- `saveProductToShow(selectedProduct: IProduct | null): void` — сохранение товара для подробного отображения
+- `getProductToShow(): IProduct | null` — получение товара для подробного отображения
+
+#### Корзина
+
+**Назначение класса**: хранение товаров, выбранных покупателем для покупки
+
+| Поле  | Тип | Назначение |
+| ------------- | ------------- | ------------- | 
+| `productsToBuy`  | `IProduct[]`  | массив товаров в корзине |
+
+**Методы**
+
+- `getProductsFromCart(): IProduct[]` — получение массива товаров, которые находятся в корзине
+- `addProductToCart(product: IProduct): void` — добавление товара, который был получен в параметре, в массив корзины
+- `deleteProductFromCart(product: IProduct): void` — удаление товара, полученного в параметре из массива корзины
+- `clearCart(): void` — очистка корзины
+- `getTotalPrice(): number` — получение стоимости всех товаров в корзине
+- `getAmountOfProducts(): number` — получение количества товаров в корзине
+- `checkPresenceOfProduct(id: string): boolean` — проверка наличия товара в корзине по его id, полученного в параметр метода
+
+#### Покупатель
+
+**Назначение класса**: хранение данных о покупателе
+
+| Поле  | Тип | Назначение |
+| ------------- | ------------- | ------------- | 
+| `paymentType`  | `TPayment`  | вид оплаты |
+| `address`  | `string`  | адрес доставки |
+| `phoneNumber`  | `string`  | вид оплаты |
+| `email`  | `string`  | адрес электронной почты |
+
+**Методы**
+
+- `savePaymentType(paymentType: TPayment): void` — сохранение способа оплаты покупки
+- `saveAddress(address: string): void` — сохранение адреса доставки товаров
+- `savePhoneNumber(phoneNumber: string): void` — сохранение номера телефона покупателя
+- `saveEmail(email: string): void` — сохранение адреса электронной почты покупателя
+- `getCustomerInfo(): IBuyer` — получение всех данных покупателя
+- `clearCustomerInfo(): void` — очитка данных покупателя
+- `checkCustomerPaymentChoice(): null | string` — проверка выбора варианта в поле "Способ оплаты"
+- `checkCustomerAddress(): null | string` — проверка заполнения поля "Адрес доставки"
+- `checkCustomerPhoneNumber(): null | string` — проверка заполнения поля "Телефон"
+- `checkCustomerEmail(): null | string` — проверка заполнения поля "Email"
+
+### Слой коммуникации
+
+Класс `ServerCommunicator` отвечает за взаимодействие с сервером, отправку данных о заказе и получение списка товаров
+
+```
+class ServerCommunicator{
+  api: IApi;
+
+  constructor(api: IApi) {
+    this.api = api
+  }
+
+  getProducts(): Promise<IProduct[]>
+
+  sendOrderInfo(cart: IProduct[], buyer: IBuyer): Promise<void>
+}
+```
