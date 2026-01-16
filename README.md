@@ -226,5 +226,5 @@ interface IBuyer {
 
 **Методы**
 
-- `getProducts(): Promise<IProduct[]>` — получение с сервера объект с массивом товаров
-- `sendOrderInfo(cart: IProduct[], buyer: IBuyer): Promise<void>` — отправка данных о покупателе и заказе на сервер
+- `getProducts(): Promise<ProductsInfo>` — получение с сервера объект с массивом товаров
+- `sendOrderInfo(info: OrderInfo): Promise<ServerAnswer>` — отправка данных о покупателе и заказе на сервер
