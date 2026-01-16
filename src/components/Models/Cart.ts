@@ -1,4 +1,4 @@
-import { IProduct } from "../../../types/index"
+import { IProduct } from "../../types/index"
 
 export class Cart{
   productsToBuy: IProduct[] = []
@@ -14,7 +14,11 @@ export class Cart{
   deleteProductFromCart(product: IProduct): void {
     const index = this.productsToBuy.indexOf(product)
 
-    this.productsToBuy.splice(index, 1)
+    if (index !== -1) {
+      this.productsToBuy.splice(index, 1)
+    } else {
+      console.warn(`Такого товара ${product} нет в корзине`)
+    }
   }
 
   clearCart(): void {
@@ -22,11 +26,8 @@ export class Cart{
   }
 
   getTotalPrice(): number {
-    return this.productsToBuy.reduce((accumulator, currentProduct) => {
-      const price = currentProduct.price || 0;
-
-      return accumulator + price
-    }, 0)
+    return this.productsToBuy.reduce((accumulator, currentProduct) => 
+      accumulator + (currentProduct.price || 0), 0)
   }
 
   getAmountOfProducts(): number {
@@ -34,9 +35,6 @@ export class Cart{
   }
 
   checkPresenceOfProduct(id: string): boolean {
-
-    const productIsPresent = (obj: IProduct) => obj.id === id
-    return this.productsToBuy.some(productIsPresent)
+    return this.productsToBuy.some((product: IProduct) => product.id === id)
   }
-
 }

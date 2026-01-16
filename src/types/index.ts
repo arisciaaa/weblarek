@@ -23,9 +23,17 @@ export interface IBuyer {
   address: string;
 }
 
-export type ProductsInfo = IProduct[]
+export type ProductsInfo = {
+  total: number,
+  items: IProduct[]
+}
 
 export type OrderInfo = {
-  cart: IProduct[];
+  cart: IProduct[],
   buyer: IBuyer
+}
+
+export type ServerAnswer = {
+  id: string, 
+  total: number
 }

@@ -216,18 +216,15 @@ interface IBuyer {
 
 ### Слой коммуникации
 
-Класс `ServerCommunicator` отвечает за взаимодействие с сервером, отправку данных о заказе и получение списка товаров
+#### Класс `ServerCommunicator` 
 
-```
-class ServerCommunicator{
-  api: IApi;
+**Назначение класса**: отвечает за взаимодействие с сервером, отправку данных о заказе и получение списка товаров
 
-  constructor(api: IApi) {
-    this.api = api
-  }
+| Поле  | Тип | Назначение |
+| ------------- | ------------- | ------------- | 
+| `api`  | `IApi`  | ответ от сервера |
 
-  getProducts(): Promise<IProduct[]>
+**Методы**
 
-  sendOrderInfo(cart: IProduct[], buyer: IBuyer): Promise<void>
-}
-```
+- `getProducts(): Promise<IProduct[]>` — получение с сервера объект с массивом товаров
+- `sendOrderInfo(cart: IProduct[], buyer: IBuyer): Promise<void>` — отправка данных о покупателе и заказе на сервер

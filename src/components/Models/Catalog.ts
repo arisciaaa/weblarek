@@ -1,4 +1,4 @@
-import { IProduct } from "../../../types/index"
+import { IProduct } from "../../types/index"
 
 export class Catalog{
   products: IProduct[] = [];
@@ -13,9 +13,7 @@ export class Catalog{
   }
 
   getProductByID(id: string): IProduct | undefined {
-    const product = (obj: IProduct) => obj.id === id
-
-    return this.products.find(product)
+    return this.products.find((product: IProduct) => product.id === id)
   }
 
   saveProductToShow(selectedProduct: IProduct | null): void {

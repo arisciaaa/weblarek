@@ -1,10 +1,11 @@
 import './scss/styles.scss';
-import { Buyer } from './components/base/Models/Buyer'
-import { Catalog } from './components/base/Models/Catalog'
-import { Cart } from './components/base/Models/Cart'
-import { ServerCommunicator } from './components/base/Models/ServerCommunicator'
+import { Buyer } from './components/Models/Buyer'
+import { Catalog } from './components/Models/Catalog'
+import { Cart } from './components/Models/Cart'
+import { ServerCommunicator } from './components/Models/ServerCommunicator'
 import { apiProducts } from './utils/data'
 import { Api } from './components/base/Api'
+import { API_URL } from './utils/constants'
 
 // Тест каталога
 console.log('---\nТEСТ КАТАЛОГА\n---')
@@ -114,13 +115,14 @@ console.groupEnd();
 
 // Тест сервера
 console.log('---\nТEСТ СЕРВЕРА\n---')
-const apiInstance = new Api(`${import.meta.env.VITE_API_ORIGIN}/api/weblarek`);
+const apiInstance = new Api(API_URL);
 const testServerCommunicator = new ServerCommunicator(apiInstance)
 
 testServerCommunicator.getProducts()
   .then(products => {
-    testCatalog.products = products;
-    console.log('Товары с сервера:', products);
+    testCatalog.products = products.items;
+    console.log('Товары с сервера:');
+    console.table(products.items)
   })
   .catch(error => {
     console.error('Ошибка при получении товаров:', error);

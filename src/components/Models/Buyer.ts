@@ -1,4 +1,4 @@
-import { IBuyer, TPayment } from '../../../types/index';
+import { IBuyer, TPayment } from '../../types/index';
 
 export class Buyer implements IBuyer {
   paymentType: TPayment = '';
