@@ -1,8 +1,8 @@
 import { IProduct } from "../../types/index"
 
 export class Catalog{
-  products: IProduct[] = [];
-  selectedProduct: IProduct | null = null
+  protected products: IProduct[] = [];
+  protected selectedProduct: IProduct | null = null
 
   saveProductsArray(products: IProduct[]): void {
     this.products = products

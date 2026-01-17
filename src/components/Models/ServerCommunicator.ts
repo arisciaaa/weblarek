@@ -8,10 +8,10 @@ export class ServerCommunicator{
   }
 
   getProducts(): Promise<ProductsInfo> {
-    return this.api.get('/product/')
+    return this.api.get<ProductsInfo>('/product/')
   }
 
   sendOrderInfo(info: OrderInfo): Promise<ServerAnswer> {
-    return this.api.post('/order/', info)
+    return this.api.post<ServerAnswer>('/order/', info)
   }
 }

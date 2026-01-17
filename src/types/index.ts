@@ -24,16 +24,16 @@ export interface IBuyer {
 }
 
 export type ProductsInfo = {
-  total: number,
+  total: number;
   items: IProduct[]
 }
 
-export type OrderInfo = {
-  cart: IProduct[],
-  buyer: IBuyer
+export interface OrderInfo extends IBuyer {
+  total: number;
+  items: string[];
 }
 
 export type ServerAnswer = {
-  id: string, 
+  id: string;
   total: number
 }

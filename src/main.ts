@@ -120,9 +120,9 @@ const testServerCommunicator = new ServerCommunicator(apiInstance)
 
 testServerCommunicator.getProducts()
   .then(products => {
-    testCatalog.products = products.items;
+    testCatalog.saveProductsArray(products.items);
     console.log('Товары с сервера:');
-    console.table(products.items)
+    console.table(testCatalog.getAllProducts())
   })
   .catch(error => {
     console.error('Ошибка при получении товаров:', error);

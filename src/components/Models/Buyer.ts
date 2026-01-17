@@ -1,10 +1,10 @@
 import { IBuyer, TPayment } from '../../types/index';
 
-export class Buyer implements IBuyer {
-  paymentType: TPayment = '';
-  email: string = '';
-  phoneNumber: string = '';
-  address: string = '';
+export class Buyer {
+  protected paymentType: TPayment = '';
+  protected email: string = '';
+  protected phoneNumber: string = '';
+  protected address: string = '';
   
   savePaymentType(paymentType: TPayment): void{
     this.paymentType = paymentType
