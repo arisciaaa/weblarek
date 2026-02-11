@@ -1,12 +1,12 @@
 import { ensureElement } from "../../../utils/utils";
 import { Component } from "../../base/Component";
 
-interface ICard {
+export interface ICard {
   title: string;
   price: number | null;
 }
 
-export class Card extends Component<ICard>{
+export class Card<T extends ICard> extends Component<T>{
   protected titleElement: HTMLElement;
   protected priceElement: HTMLElement;
 
@@ -21,9 +21,9 @@ export class Card extends Component<ICard>{
     this.titleElement.textContent = value
   }
 
-  set price(value: number) {
+  set price(value: number | null) {
     if (value === null) {
-      this.priceElement.textContent = 'Недоступно';
+      this.priceElement.textContent = 'Бесценно';
     } else {
       this.priceElement.textContent = String(value) + 'синапсов'
     }

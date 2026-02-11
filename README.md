@@ -387,12 +387,12 @@ interface IBuyer {
 | Поле  | Тип | Назначение |
 | ------------- | ------------- | ------------- | 
 | `errors`  | `HTMLElement`  | текст ошибок после валидации формы |
-| `submitButton`  | `HTMLButtonElement`  | кнопка для перехода к следующей форме / оформления заказа |
+| `buttonElement`  | `HTMLButtonElement`  | кнопка для перехода к следующей форме / оформления заказа |
 
 **Сеттеры**
 
 - `set errors(value: string)` — задаёт сообщение об ошибке заполнения формы
-- `set valid(value: boolean)` — проверка валидности формы для активации кнопки `submitButton`
+- `set buttonIsDisabled(value: boolean)` — проверка валидности формы для активации кнопки `buttonElement`
 
 #### Класс `OrderForm`
 
@@ -401,15 +401,15 @@ interface IBuyer {
 | Поле  | Тип | Назначение |
 | ------------- | ------------- | ------------- |
 | *`errors`  | `HTMLElement`  | текст ошибок после валидации формы |
-| *`submitButton`  | `HTMLButtonElement`  | кнопка для перехода к следующей форме | 
-| `address`  | `HTMLInputElement`  | адрес доставки |
-| `buttonOnline`  | `HTMLButtonElement`  | кнопка "Онлайн" способа оплаты |
-| `buttonWhenReceived`  | `HTMLButtonElement`  | кнопка "При получении" способа оплаты |
+| *`buttonElement`  | `HTMLButtonElement`  | кнопка для перехода к следующей форме | 
+| `addressElement`  | `HTMLInputElement`  | адрес доставки |
+| `buttonOnlineElement`  | `HTMLButtonElement`  | кнопка "Онлайн" способа оплаты |
+| `buttonWhenReceivedElement`  | `HTMLButtonElement`  | кнопка "При получении" способа оплаты |
 
 **Сеттеры**
 
 - *`set errors(value: string)` — задаёт сообщение об ошибке заполнения формы
-- *`set valid(value: boolean)` — проверка валидности формы для активации кнопки `submitButton`
+- *`set buttonIsDisabled(value: boolean)` — проверка валидности формы для активации кнопки `buttonElement`
 - `set address(value: string)` — отображает переданный адрес доставки в поле ввода
 - `set selected(value: string)` — отображает переданный выбранный способ оплаты
 
@@ -420,13 +420,13 @@ interface IBuyer {
 | Поле  | Тип | Назначение |
 | ------------- | ------------- | ------------- |
 | *`errors`  | `HTMLElement`  | текст ошибок после валидации формы |
-| *`submitButton`  | `HTMLButtonElement`  | кнопка для перехода к следующей форме | 
-| `email`  | `HTMLInputElement`  | адрес электронной почты |
-| `phone`  | `HTMLInputElement`  | номер телефона |
+| *`buttonElement`  | `HTMLButtonElement`  | кнопка для перехода к следующему модальному окну | 
+| `emailElement`  | `HTMLInputElement`  | адрес электронной почты |
+| `phoneElement`  | `HTMLInputElement`  | номер телефона |
 
 **Сеттеры**
 
 - *`set errors(value: string)` — задаёт сообщение об ошибке заполнения формы
-- *`set valid(value: boolean)` — проверка валидности формы для активации кнопки `submitButton`
+- *`set buttonIsDisabled(value: boolean)` — проверка валидности формы для активации кнопки `buttonElement`
 - `set email(value: string)` — отображает переданный адрес электронной почты в поле ввода
 - `set phone(value: string)` — отображает переданный номер телефона в поле ввода
