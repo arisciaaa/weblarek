@@ -16,6 +16,14 @@ export class ContactsForm extends Form<IContactsForm> {
 
     this.emailElement = ensureElement<HTMLInputElement>('input[name="email"]', this.container)
     this.phoneElement = ensureElement<HTMLInputElement>('input[name="phone"]', this.container)
+
+    this.emailElement.addEventListener('input', () => {
+      this.events.emit('email:changed', {email: this.emailElement.value})
+    });
+
+    this.phoneElement.addEventListener('input', () => {
+      this.events.emit('phone:changed', {phone: this.phoneElement.value})
+    });
   }
 
   set email(value: string) {

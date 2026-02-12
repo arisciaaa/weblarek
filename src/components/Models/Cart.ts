@@ -1,7 +1,11 @@
 import { IProduct } from "../../types/index"
+import { EventEmitter } from "../base/Events";
 
 export class Cart{
   protected productsToBuy: IProduct[] = []
+
+  constructor(private events: EventEmitter) {
+  }
 
   getProductsFromCart(): IProduct[] {
     return this.productsToBuy
@@ -9,6 +13,7 @@ export class Cart{
 
   addProductToCart(product: IProduct): void {
     this.productsToBuy.push(product)
+    this.events.emit('cart:add-product')
   }
 
   deleteProductFromCart(product: IProduct): void {
@@ -16,6 +21,7 @@ export class Cart{
 
     if (index !== -1) {
       this.productsToBuy.splice(index, 1)
+      this.events.emit('cart:delete-product')
     } else {
       console.warn(`Такого товара ${product} нет в корзине`)
     }
@@ -23,6 +29,7 @@ export class Cart{
 
   clearCart(): void {
     this.productsToBuy = []
+    this.events.emit('cart:clear')
   }
 
   getTotalPrice(): number {

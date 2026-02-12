@@ -7,6 +7,7 @@ interface ICardPreview extends ICard{
   category: keyof typeof categoryMap;
   image: string;
   description: string;
+  buttonText: string;
 }
 
 export class CardPreview extends Card<ICardPreview> {
@@ -43,6 +44,10 @@ export class CardPreview extends Card<ICardPreview> {
 
   set buttonIsDisabled(value: boolean) {
     this.buttonElement.disabled = value;
+  }
+
+  set buttonText(value: string) {
+    this.buttonElement.textContent = value;
   }
 
 }

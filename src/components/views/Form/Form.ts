@@ -13,7 +13,7 @@ export class Form<T extends IForm> extends Component<T>{
     super(container)
 
     this.errorsElement = ensureElement<HTMLElement>('.form__errors', this.container)
-    this.buttonElement = ensureElement<HTMLButtonElement>('.order__button', this.container)
+    this.buttonElement = ensureElement<HTMLButtonElement>('button[type="submit"]', this.container)
   }
 
   set errors(value: string) {
