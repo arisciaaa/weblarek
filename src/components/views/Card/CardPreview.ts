@@ -8,6 +8,7 @@ interface ICardPreview extends ICard{
   image: string;
   description: string;
   buttonText: string;
+  buttonIsDisabled: boolean;
 }
 
 export class CardPreview extends Card<ICardPreview> {

@@ -15,6 +15,7 @@ export class Card<T extends ICard> extends Component<T>{
 
     this.titleElement = ensureElement<HTMLElement>('.card__title', this.container)
     this.priceElement = ensureElement<HTMLElement>('.card__price', this.container)
+    
   }
 
   set title(value: string) {
@@ -25,7 +26,7 @@ export class Card<T extends ICard> extends Component<T>{
     if (value === null) {
       this.priceElement.textContent = 'Бесценно';
     } else {
-      this.priceElement.textContent = String(value) + 'синапсов'
+      this.priceElement.textContent = String(value) + ' синапсов'
     }
     
   }

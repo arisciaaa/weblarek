@@ -1,9 +1,10 @@
 import { ensureElement } from "../../../utils/utils";
 import { Card, ICard } from "./Card"
-import { categoryMap } from '../../../utils/constants';
+import { categoryMap, CDN_URL } from '../../../utils/constants';
 import { IEvents } from "../../base/Events";
 
 interface ICardCatalog extends ICard{
+  id: string;
   category: keyof typeof categoryMap;
   image: string;
 }
@@ -11,6 +12,7 @@ interface ICardCatalog extends ICard{
 export class CardCatalog extends Card<ICardCatalog> {
   protected categoryElement: HTMLElement;
   protected imageElement: HTMLImageElement;
+  private id: string = ''
 
   constructor(protected events: IEvents, container: HTMLElement) {
     super(container)
@@ -19,7 +21,7 @@ export class CardCatalog extends Card<ICardCatalog> {
     this.imageElement = ensureElement<HTMLImageElement>('.card__image', this.container)
 
     this.container.addEventListener('click', () => {
-      this.events.emit('card:open')
+      this.events.emit('card:open', {id: this.id})
     });
   }
 
@@ -30,5 +32,9 @@ export class CardCatalog extends Card<ICardCatalog> {
 
   set image(src: string) {
     this.setImage(this.imageElement, src)
+  }
+
+  set idSet(value: string) {
+    this.id = value
   }
 }
