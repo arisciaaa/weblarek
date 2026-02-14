@@ -10,14 +10,17 @@ import { Api } from './components/base/Api'
 import { API_URL } from './utils/constants'
 import { cloneTemplate } from './utils/utils'
 
+import { Header } from "./components/views/Header"
 import { Gallery } from "./components/views/Gallery"
 import { Modal } from "./components/views/Modal"
+import { Basket } from "./components/views/Basket"
 import { CardCatalog } from "./components/views/Card/CardCatalog"
 
 import { EventEmitter } from "./components/base/Events";
 import { CDN_URL } from './utils/constants';
 import { CardPreview } from './components/views/Card/CardPreview';
 import { IProduct } from './types';
+import { CardBasket } from './components/views/Card/CardBasket';
 
 
 // функция для текста кнопки в модальном окне с карточкой товара
@@ -53,14 +56,18 @@ const apiInstance = new Api(API_URL);
 const serverCommunicator = new ServerCommunicator(apiInstance)
 const events = new EventEmitter()
 
+const headerElement = document.querySelector('.header') as HTMLElement
 const galleryElement = document.querySelector('.gallery') as HTMLElement
 const modalWindow = document.querySelector('.modal') as HTMLElement
+const basketElement = cloneTemplate('#basket') as HTMLElement
 
 const catalog = new Catalog(events)
 const cart = new Cart(events)
 
 const gallery = new Gallery(galleryElement)
 const modal = new Modal(events, modalWindow)
+const header = new Header(events, headerElement)
+const basket = new Basket(events, basketElement)
 
 // генерация каталога карточек товаров
 events.on('catalog:save-products-catalog', () => {
@@ -68,7 +75,6 @@ events.on('catalog:save-products-catalog', () => {
 
     const cards = products.map(item => {
         const clone = cloneTemplate('#card-catalog')
-
         const card = new CardCatalog(events, clone);
 
         return card.render({
@@ -110,32 +116,63 @@ events.on('card:button-clicked', () => {
     
     if (product && !cart.checkPresenceOfProduct(product.id)) {
         cart.addProductToCart(product);
+        renderCardPreview(product)
     } else if (product && cart.checkPresenceOfProduct(product.id)) {
         cart.deleteProductFromCart(product);
+        renderCardPreview(product)
     }
 
-    console.log(cart.getProductsFromCart())    
+    header.counter = cart.getAmountOfProducts()    
 })
 
-// клик по кнопке для добавления товара в корзину
-events.on('cart:add-product', () => {
-    const currentProduct = catalog.getProductToShow();
+// открытие корзины
+function renderBasket(products: IProduct[]) {
+        
+    if (cart.getAmountOfProducts() === 0) {
+        modal.content = basket.render({
+            productsList: [],
+            totalSum: cart.getTotalPrice(),
+            buttonIsDisabled: true
+        })
+    } else {
+        const cards = products.map((item, index) => {
+            const clone = cloneTemplate('#card-basket')
+            const card = new CardBasket(events, clone);
 
-    if (currentProduct) {
-        renderCardPreview(currentProduct)
+            return card.render({
+                id: item.id,
+                index: index + 1,
+                title: item.title,
+                price: item.price,
+            })
+        })
+
+        modal.content = basket.render({
+            productsList: cards,
+            totalSum: cart.getTotalPrice(),
+            buttonIsDisabled: false
+        })
     }
+}
+
+events.on('basket:open', () => {
+    const products = cart.getProductsFromCart()
+    renderBasket(products)
+    
+    modal.open()
 })
 
-// клик по кнопке для удаления товара из корзины
-events.on('cart:delete-product', () => {
-    const currentProduct = catalog.getProductToShow();
+events.on('basket:card-delete', (info: {id: string}) => {
+    const products = cart.getProductsFromCart()
+    const productToDelete = products.find(product => product.id === info.id)
 
-    if (currentProduct) {
-        renderCardPreview(currentProduct)
-    }
+    if (productToDelete) {
+        header.counter = cart.getAmountOfProducts()
+        cart.deleteProductFromCart(productToDelete)        
+    }  
+    
+    renderBasket(cart.getProductsFromCart())
 })
-
-
 
 serverCommunicator.getProducts().then((data) => {
   catalog.saveProductsArray(data.items)

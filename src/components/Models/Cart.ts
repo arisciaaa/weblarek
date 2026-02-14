@@ -13,7 +13,6 @@ export class Cart{
 
   addProductToCart(product: IProduct): void {
     this.productsToBuy.push(product)
-    this.events.emit('cart:add-product')
   }
 
   deleteProductFromCart(product: IProduct): void {
@@ -21,7 +20,6 @@ export class Cart{
 
     if (index !== -1) {
       this.productsToBuy.splice(index, 1)
-      this.events.emit('cart:delete-product')
     } else {
       console.warn(`Такого товара ${product} нет в корзине`)
     }
